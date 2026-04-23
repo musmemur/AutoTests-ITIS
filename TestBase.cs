@@ -7,13 +7,7 @@
         [SetUp]
         public void SetupTest()
         {
-            app = new AppManager();
-        }
-
-        [TearDown]
-        public void TeardownTest()
-        {
-            app.Stop();
+            app = AppManager.GetInstance();
         }
     }
 }

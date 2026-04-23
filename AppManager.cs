@@ -16,7 +16,9 @@ namespace AuthoTests
         private readonly LoginHelper auth;
         private readonly ContactHelper contact;
 
-        public AppManager()
+        private static ThreadLocal<AppManager> app = new();
+
+        private AppManager()
         {
             Driver = new ChromeDriver();
             Driver.Manage().Window.Maximize();
@@ -28,6 +30,17 @@ namespace AuthoTests
             navigation = new NavigationHelper(this, baseURL);
             auth = new LoginHelper(this);
             contact = new ContactHelper(this);
+        }
+        ~AppManager()
+        {
+            try
+            {
+                Driver?.Quit();
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         public IWebDriver Driver { get; }
@@ -55,6 +68,17 @@ namespace AuthoTests
         public ContactHelper Contact
         {
             get { return contact; }
+        }
+
+        public static AppManager GetInstance()
+        {
+            if (!app.IsValueCreated)
+            {
+                AppManager newInstance = new AppManager();
+                newInstance.Navigation.OpenHomePage();
+                app.Value = newInstance;
+            }
+            return app.Value;
         }
 
         public void Stop()
