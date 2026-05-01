@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="AuthoTests.csproj" />
+  <Project Path="DataGenerator/DataGenerator.csproj" Id="7c755359-7626-4ad1-b4c1-1a0d18c1e749" />
 </Solution>

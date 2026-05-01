@@ -83,7 +83,6 @@ namespace AuthoTests.Helpers
             driver.FindElement(By.CssSelector(".contactTableBodyRow:last-child > td:nth-child(2)")).Click();
         }
 
-        // Получение данных контакта по email
         public ContactData GetCreatedContactData(string expectedEmail)
         {
             var rows = driver.FindElements(By.CssSelector(".contactTableBodyRow"));
