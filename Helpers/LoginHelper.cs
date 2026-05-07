@@ -5,8 +5,45 @@ namespace AuthoTests.Helpers
 {
     public class LoginHelper(AppManager manager) : HelperBase(manager)
     {
+        public bool IsLoggedIn()
+        {
+            try
+            {
+                wait.Until(driver => driver.FindElement(By.Id("logout")).Displayed);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool IsLoggedIn(string username)
+        {
+            try
+            {
+                if (!IsLoggedIn())
+                    return false;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public void Login(AccountData account)
         {
+            if (IsLoggedIn())
+            {
+                if (IsLoggedIn(account.Email))
+                {
+                    return;
+                }
+                Logout();
+            }
+
             driver.FindElement(By.Id("email")).Clear();
             driver.FindElement(By.Id("email")).SendKeys(account.Email);
             driver.FindElement(By.Id("password")).Clear();
@@ -22,6 +59,9 @@ namespace AuthoTests.Helpers
         {
             try
             {
+                if (!IsLoggedIn())
+                    return;
+
                 wait.Until(driver => driver.FindElement(By.Id("logout")).Displayed &&
                                      driver.FindElement(By.Id("logout")).Enabled);
 

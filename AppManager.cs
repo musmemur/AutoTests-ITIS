@@ -24,7 +24,7 @@ namespace AuthoTests
             Driver.Manage().Window.Maximize();
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
-            baseURL = "https://thinking-tester-contact-list.herokuapp.com/";
+            baseURL = Settings.BaseURL;
             verificationErrors = new StringBuilder();
 
             navigation = new NavigationHelper(this, baseURL);
@@ -39,7 +39,7 @@ namespace AuthoTests
             }
             catch (Exception)
             {
-                
+
             }
         }
 

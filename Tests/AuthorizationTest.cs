@@ -5,18 +5,18 @@ namespace AuthoTests.Tests
     [TestFixture]
     public class AuthorizationTest : TestBase
     {
-        public static IEnumerable<AccountData> AccountDataFromXmlFile()
+        [Test]
+        public void AuthorizationTest_ValidCredentials_ShouldLoginSuccessfully()
         {
-            return TestDataHelper.LoadAccountDataFromXmlFile("accounts.xml");
-        }
+            var validAccount = new AccountData(
+                Settings.Login,
+                Settings.Password
+            );
 
-        [Test, TestCaseSource(nameof(AccountDataFromXmlFile))]
-        public void AuthorizationTest_ValidCredentials_ShouldLoginSuccessfully(AccountData validAccount)
-        {
-            app.Navigation.OpenHomePage();
+            app.Auth.Logout();
             app.Auth.Login(validAccount);
 
-            Assert.IsTrue(app.Driver.Url.Contains("contactList"), "Пользователь не авторизован!");
+            Assert.IsTrue(app.Auth.IsLoggedIn(), "Авторизация не выполнена");
         }
     }
 }

@@ -1,36 +1,32 @@
-﻿using AuthoTests.Entities;
-
-
-namespace AuthoTests.Tests;
+﻿using AuthoTests;
+using AuthoTests.Entities;
 
 [TestFixture]
-public class EditContactTest : TestBase {
+public class EditContactTest : AuthBase
+{
+    [Test]
+    public void EditContact()
+    {
+        var newContact = new ContactData(
+          "Timur",
+          "Krivosheev",
+          "2005-06-25",
+          "timur.krivosheev@example.com"
+        );
 
-  [Test]
-  public void EditContact() {
-    var validAccount = new AccountData(
-      "timurkrivoscheev2005@gmail.com",
-      "12345678"
-    );
-    
-    var newContact = new ContactData(
-      "Timur",
-      "Krivosheev",
-      "2005-06-25",
-      "timur.krivosheev@example.com"
-    );
+        var editedContact = new ContactData(
+            "Ivan",
+            "Ivanov",
+            "2015-06-25",
+            "ivan.ivanov@example.com"
+        );
 
-    var editedContact = new ContactData(
-        "Ivan",
-        "Ivanov",
-        "2015-06-25",
-        "ivan.ivanov@example.com"
-    );
+        app.Contact.AddContact(newContact);
+        app.Contact.EditContact(editedContact);
 
-    app.Navigation.OpenHomePage();
-    app.Auth.Login(validAccount);
-    app.Contact.AddContact(newContact);
-    app.Contact.EditContact(editedContact);
-    
-  }
+        bool contactEdited = app.Driver.PageSource.Contains("Ivan") &&
+                           app.Driver.PageSource.Contains("Ivanov");
+
+        Assert.IsTrue(contactEdited, "Контакт не был отредактирован!");
+    }
 }
